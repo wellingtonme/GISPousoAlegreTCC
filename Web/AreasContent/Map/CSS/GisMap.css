@@ -1,0 +1,20 @@
+﻿html, body, #mapDiv {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+#info {
+    bottom: 20px;
+    color: #444;
+    height: auto;
+    font-family: arial;
+    left: 20px;
+    margin: 5px;
+    padding: 10px;
+    position: absolute;
+    text-align: left;
+    width: 200px;
+    z-index: 40;
+}

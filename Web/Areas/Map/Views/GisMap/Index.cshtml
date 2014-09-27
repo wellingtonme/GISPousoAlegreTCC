@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="http://js.arcgis.com/3.10/"></script>
+    <script>var dojoConfig = { parseOnLoad: true }</script>
+    <link rel="stylesheet" href="http://js.arcgis.com/3.10/js/dojo/dijit/themes/claro/claro.css" />
+    <link rel="stylesheet" href="http://js.arcgis.com/3.10/js/esri/css/esri.css" />
+    <link rel="stylesheet" href="~/AreasContent/Map/CSS/GisMap.css" />
+    <title>@ViewBag.Title</title>
+</head>
+<body class="claro">
+    <div id="mapDiv"></div>
+    <div id="info" class="esriSimpleSlider">
+        <div data-dojo-type="dijit.form.Button" id="drawPoly" onclick="app.toolbar.activate(esri.toolbars.Draw.FREEHAND_POLYGON);app.map.hideZoomSlider();">
+            Calcular População
+        </div>
+        Click "Calcular População" e desenhe um poligono no mapa.
+    </div>
+
+    <div data-dojo-type="dijit.Dialog" id="dialog1" title="Population Summary"></div>
+</body>
+
+@Scripts.Render("~/bundles/jquery")
+<script src="~/AreasContent/Map/GisMapControl.js"></script>
+    
+</html>
