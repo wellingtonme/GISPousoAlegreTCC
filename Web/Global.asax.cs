@@ -1,11 +1,18 @@
 ﻿using System;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
+using System.Reflection;
+using SharpArch.Web.Mvc.Castle;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Http;
-using System.Web.Mvc;
 using System.Web.Optimization;
-using System.Web.Routing;
+using Web.Controllers;
+using Castle.Windsor;
+using Microsoft.Practices.ServiceLocation;
+using CommonServiceLocator.WindsorAdapter;
+using Web.Utils;
 
 namespace Web
 {
@@ -23,6 +30,17 @@ namespace Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+            InitializeServiceLocator();
+        }
+
+        protected virtual void InitializeServiceLocator()
+        {
+            IWindsorContainer container = new WindsorContainer();
+            ControllerBuilder.Current.SetControllerFactory(new WindsorControllerFactory(container));
+            container.RegisterControllers(typeof(HomeController).Assembly);
+            ComponentRegistrar.AddComponentsTo(container);
+
+            ServiceLocator.SetLocatorProvider(() => new WindsorServiceLocator(container));
         }
     }
 }

@@ -55,6 +55,18 @@ var GisMapClass = $.Class.create({
 
             function computeZonalStats(evtObj) {
                 var geometry = evtObj.geometry;
+
+                //function to verify schools.
+                $.ajax({
+                    url: "/GisMap/GetSchoolInSelectedArea?geometry=" + geometry.rings,
+                    type: 'POST',
+                    async: false,
+                    success: function (data) {
+                    },
+                    error: function (data) {
+                    },
+                });
+
                 /*After user draws shape on map using the draw toolbar compute the zonal*/
                 map.showZoomSlider();
                 map.graphics.clear();
