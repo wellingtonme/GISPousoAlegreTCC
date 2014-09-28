@@ -4,13 +4,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="http://js.arcgis.com/3.10/"></script>
-    <script>var dojoConfig = { parseOnLoad: true }</script>
-    <link rel="stylesheet" href="http://js.arcgis.com/3.10/js/dojo/dijit/themes/claro/claro.css" />
-    <link rel="stylesheet" href="http://js.arcgis.com/3.10/js/esri/css/esri.css" />
-    <link rel="stylesheet" href="~/AreasContent/Map/CSS/GisMap.css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
     <title>@ViewBag.Title</title>
+
+    <link rel="stylesheet" href="http://js.arcgis.com/3.10/js/dojo/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="http://js.arcgis.com/3.10/js/esri/css/esri.css">
+    <link rel="stylesheet" href="~/AreasContent/Map/CSS/GisMap.css" />
+
+    @Scripts.Render("~/bundles/jquery")
+    <script>var dojoConfig = { parseOnLoad: true }</script>
+    <script src="http://js.arcgis.com/3.10/"></script>
+    <script src="~/AreasContent/Map/GisMapControl.js"></script>
 </head>
+
 <body class="claro">
     <div id="mapDiv"></div>
     <div id="info" class="esriSimpleSlider">
@@ -20,10 +27,8 @@
         Click "Calcular População" e desenhe um poligono no mapa.
     </div>
 
-    <div data-dojo-type="dijit.Dialog" id="dialog1" title="Population Summary"></div>
-</body>
+    <div data-dojo-type="dijit.Dialog" id="dialog1" title="Resultados"></div>
 
-@Scripts.Render("~/bundles/jquery")
-<script src="~/AreasContent/Map/GisMapControl.js"></script>
-    
+</body>
 </html>
+

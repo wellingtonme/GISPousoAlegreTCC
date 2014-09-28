@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using ApplicationService.GisMapServices;
 using SharpArch.Domain;
+using Model.School;
 
 namespace Web.Areas.Map.Controllers
 {
@@ -17,50 +18,49 @@ namespace Web.Areas.Map.Controllers
 
         public ActionResult Index()
         {
-            try
-            {
-                var schoolService = SafeServiceLocator<ISchoolService>.GetService();
-                schoolService.GetAllSchools();
+            //try
+            //{
+            //    var schoolService = SafeServiceLocator<ISchoolService>.GetService();
+            //    schoolService.GetAllSchools();
                 
-            }
-            catch (Exception ex)
-            {
+            //}
+            //catch (Exception ex)
+            //{
 
-            }
+            //}
             return View();
         }
 
-        public JsonResult GetSchoolInSelectedArea(object geometry)
+        public JsonResult GetSchoolInSelectedArea(string geometry)
         {
             JsonResult result = new JsonResult();
             result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             try
             {
-                var js = new JavaScriptSerializer();
-                var obj = js.Serialize(geometry);
+                //var js = new JavaScriptSerializer();
+                //var obj = js.Serialize(geometry);
+                string coordinates = GetCoordinates(geometry);
 
-                IList<string> coordinates = GetCoordinates(obj);
+                IList<SchoolsInPolygonModel> schools = SafeServiceLocator<ISchoolService>.GetService().GetAllSchoolsInSelectedArea(coordinates);
             }
             catch (Exception ex)
             {
 
             }
-            //make a service to get school
+
             return result;
         }
 
-        private IList<string> GetCoordinates(string coordinates)
+        private string GetCoordinates(string coordinates)
         {
-            IList<string> result = null;
+            string result = "";
             try
             {
-                result = new List<string>();
                 string[] splitCoords = coordinates.Split(',');
-                splitCoords[0].Replace("[\\", "");
-                splitCoords.Last().Replace("\\]", "");
-                for (int x = 0; x < splitCoords.Length / 2; x = x+2)
+                
+                for (int x = 0; x < splitCoords.Length; x = x+2)
                 {
-                    result.Add(string.Format("{0} {1}", splitCoords[x], splitCoords[x + 1]));
+                    result = string.Concat(result,(string.Format("{0} {1}{2}", splitCoords[x], splitCoords[x + 1], ',')));
                 }
             }
             catch (Exception ex)
