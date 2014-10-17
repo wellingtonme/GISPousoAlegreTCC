@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>squire.decoupled</id>
+    <version>0.2.3</version>
+    <title>Squire Decoupled</title>
+    <authors>Daniel Krainas</authors>
+    <owners>Daniel Krainas</owners>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/danielkrainas/squire</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Squire framework decoupling API.</description>
+    <language>en-US</language>
+    <tags>squire decouple modular aop aspects pipeline commands domain events cqrs</tags>
+    <dependencies>
+      <dependency id="squire.essentials" version="0.2.3.0" />
+      <dependency id="CommonServiceLocator" version="1.2" />
+    </dependencies>
+  </metadata>
+</package>

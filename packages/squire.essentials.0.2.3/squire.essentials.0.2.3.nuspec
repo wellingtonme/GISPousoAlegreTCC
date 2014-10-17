@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>squire.essentials</id>
+    <version>0.2.3</version>
+    <title>Squire Essentials</title>
+    <authors>Daniel Krainas</authors>
+    <owners>Daniel Krainas</owners>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/danielkrainas/squire</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Extensions to base framework classes and utilities.</description>
+    <language>en-US</language>
+    <tags>squire framework essentials validation factory</tags>
+  </metadata>
+</package>

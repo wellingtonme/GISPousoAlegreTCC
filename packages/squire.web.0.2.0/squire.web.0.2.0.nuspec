@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>squire.web</id>
+    <version>0.2.0</version>
+    <title>Squire Web Extensions</title>
+    <authors>Daniel Krainas</authors>
+    <owners>Daniel Krainas</owners>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Squire web components.</description>
+    <tags>squire mvc web</tags>
+    <dependencies>
+      <dependency id="squire.essentials" />
+      <dependency id="squire.decoupled" />
+      <dependency id="Microsoft.AspNet.WebApi" version="4.0.30506.0" />
+    </dependencies>
+  </metadata>
+</package>

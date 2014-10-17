@@ -28,6 +28,11 @@ namespace Web.Utils
                 AllTypes.Pick()
                 .FromAssemblyNamed("Data")
                 .WithService.FirstInterface());
+
+            container.Register(
+                AllTypes.Pick()
+                .FromAssemblyNamed("Common")
+                .WithService.FirstInterface());
         }
     }
 }

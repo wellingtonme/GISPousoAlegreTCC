@@ -1,4 +1,5 @@
-﻿html {
+﻿
+html {
     background-color: #e2e2e2;
     margin: 0;
     padding: 0;
@@ -95,24 +96,27 @@ h5, h6 {
 ----------------------------------------------------------*/
 .content-wrapper {
     margin: 0 auto;
-    max-width: 960px;
+    /*max-width: 960px;*/
+    max-width:100%;
 }
 
 #body {
     background-color: #efeeef;
     clear: both;
     padding-bottom: 35px;
+    position:absolute;
+    top: 0;
+    right:0;
 }
 
     .main-content {
-        background: url("../Images/accent.png") no-repeat;
+        /*background: url("../Images/accent.png") no-repeat;*/
         padding-left: 10px;
-        padding-top: 30px;
     }
 
-    .featured + .main-content {
+    /*.featured + .main-content {
         background: url("../Images/heroAccent.png") no-repeat;
-    }
+    }*/
 
 header .content-wrapper {
     padding-top: 20px; 
@@ -130,9 +134,10 @@ footer {
 ----------------------------------------------------------*/
 .site-title {
     color: #c8c8c8;
-    font-family: Rockwell, Consolas, "Courier New", Courier, monospace;
+    font-family: "linecons";
     font-size: 2.3em;
     margin: 0;
+    text-align:center;
 }
 
 .site-title a, .site-title a:hover, .site-title a:active {
@@ -147,18 +152,26 @@ footer {
 ----------------------------------------------------------*/
 #login {
     display: block;
-    font-size: .85em;
+    font-size: .95em;
     margin: 0 0 10px;
     text-align: right;
+    color:#e2e2e2;
+    font-family:"linecons";
 }
 
     #login a {
-        background-color: #d3dce0;
         margin-left: 10px;
         margin-right: 3px;
         padding: 2px 3px;
         text-decoration: none;
+        color: #e2e2e2;
+        font-size:1.3em;
     }
+
+        #login a:hover{
+            background-color: #336CA6 !important;
+            color: #3d3d3d ;
+        }
 
     #login a.username {
         background: none;
@@ -180,28 +193,41 @@ footer {
 /* menu
 ----------------------------------------------------------*/
 ul#menu {
-    font-size: 1.3em;
-    font-weight: 600;
+    font-size: 2em;
+    /*font-weight: 900;*/
     margin: 0 0 5px;
     padding: 0;
-    text-align: right;
+    text-align: center;
 }
 
     ul#menu li {
-        display: inline;
+        display: block;
         list-style: none;
-        padding-left: 15px;
+        padding-top:15px;
+        padding-bottom:15px;
+        border-bottom:1px solid #295685;
     }
+
+        ul#menu li:first-child {
+            border-top:1px solid #295685;
+        }
+
+        ul#menu li:hover {
+           background-color:#295685;
+        }
 
         ul#menu li a {
             background: none;
-            color: #999;
+            color: #e2e2e2;
             text-decoration: none;
+            width:100%;
+            height:100%;
+            font-family:"linecons";
         }
 
         ul#menu li a:hover {
-            color: #333;
             text-decoration: none;
+
         }
 
 
@@ -220,7 +246,7 @@ ul#menu {
         background-image: -webkit-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
         background-image: linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
         color: #3e5667;
-        padding: 20px 40px 30px 40px;
+        padding: 20px 10px 30px 10px;
     }
 
         .featured hgroup.title h1, .featured hgroup.title h2 {
@@ -228,12 +254,15 @@ ul#menu {
         }
 
         .featured p {
-            font-size: 1.1em;
+            font-size: 1.5em;
         }
 
 /* page titles */
 hgroup.title {
     margin-bottom: 10px;
+    margin-top:50px;
+    padding-bottom:7px;
+    border-bottom: 1px solid #999;
 }
 
 hgroup.title h1, hgroup.title h2 {
@@ -587,6 +616,53 @@ tr.pager td {
 }
 
 
+/*************************/
+/*       CUSTONS         */
+/*************************/
+
+.sideBar {
+    width:20% !important;
+    height:100% !important;
+    position: absolute !important;
+    left: 0;
+    top:0;
+    display:block !important;
+    float: left !important;
+    background: #336CA6;
+
+    /*background: -moz-linear-gradient(-45deg, #002400 0%, #005700 17%, #008a00 33%, #52b152 67%, 
+                                    #83c783 83%, #b4ddb4 100%);
+        background: -webkit-gradient(linear, left top, right bottom, color-stop(100%, #b4ddb4),
+                                    color-stop(83%, #83c783), color-stop(67%, #52b152),
+                                    color-stop(33%, #008a00), color-stop(17%, #005700), color-stop(0%, #002400));
+        background: -webkit-linear-gradient(-45deg, #002400 0%, #005700 17%, #008a00 33%, #52b152 67%, 
+                                    #83c783 83%, #b4ddb4 100%);
+        background: -o-linear-gradient(-45deg, #002400 0%, #005700 17%, #008a00 33%, #52b152 67%, 
+                                    #83c783 83%, #b4ddb4 100%);
+        background: -ms-llinear-gradient(-45deg, #002400 0%, #005700 17%, #008a00 33%, #52b152 67%, 
+                                    #83c783 83%, #b4ddb4 100%);
+        background: linear-gradient(-45deg, #002400 0%, #005700 17%, #008a00 33%, #52b152 67%, 
+                                    #83c783 83%, #b4ddb4 100%);*/
+
+    box-shadow: 2px 0px 10px #000;
+    z-index: 1;
+}
+
+.textsStyle {
+    font-family: "linecons";
+    font-size: 1.3em;
+}
+
+    .textsStyle ol {
+        padding-right:20px;
+    }
+
+.contentPercentage {
+    float: right !important;
+    width:80% !important;
+    font-family:"linecons";
+}
+
 /********************
 *   Mobile Styles   *
 ********************/
@@ -608,7 +684,7 @@ tr.pager td {
     /* login */
     #login {
         font-size: .85em;
-        margin: 0 0 12px;
+        margin: 0 auto;
         text-align: center;
     }
 
@@ -635,6 +711,7 @@ tr.pager td {
         #login a:hover {
             color: #333;
         }
+
 
     /* menu */
     nav {

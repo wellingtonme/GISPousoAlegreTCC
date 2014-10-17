@@ -15,20 +15,71 @@
     @Scripts.Render("~/bundles/jquery")
     <script>var dojoConfig = { parseOnLoad: true }</script>
     <script src="http://js.arcgis.com/3.10/"></script>
+    <script src="~/AreasContent/Map/PointsObjectsControl.js"></script>
     <script src="~/AreasContent/Map/GisMapControl.js"></script>
+    <script src="~/AreasContent/Map/CoordinatesControl.js"></script>
 </head>
 
 <body class="claro">
-    <div id="mapDiv"></div>
-    <div id="info" class="esriSimpleSlider">
-        <div data-dojo-type="dijit.form.Button" id="drawPoly" onclick="app.toolbar.activate(esri.toolbars.Draw.FREEHAND_POLYGON);app.map.hideZoomSlider();">
-            Calcular População
+    <div id="sideBarOfOptions">
+        <div id="legendDiv">
+            <fieldset>
+                <legend>Legenda</legend>
+                <div>
+                    <img src="~/Images/schools_mark.png" alt="Scholl Mark" />
+                    <label>Escolas.</label>
+                </div>
+                <div>
+                    <img src="~/Images/cops_mark.png" alt="Cops Mark" />
+                    <label>Postos Policiais.</label>
+                </div>
+            </fieldset>
         </div>
-        Click "Calcular População" e desenhe um poligono no mapa.
+        <div id="coordinatesContent">
+            <fieldset>
+                <legend>Coordenadas</legend>
+                <span id="coordinates">0, 0</span>
+            </fieldset>
+        </div>
+        <div>
+            <fieldset>
+                <legend>Calculos</legend>
+                <button id="btnCalcData" class="btn btn-primary" onclick="app.toolbar.activate(esri.toolbars.Draw.FREEHAND_POLYGON);app.map.hideZoomSlider();">Calcular Dados</button>
+            </fieldset>
+        </div>
+        <div id="resultContainer">
+            <fieldset>
+                <legend>Resultados</legend>
+                <span>População:
+                    <label id="lbPopulationNumer"></label>
+                </span>
+                <hr />
+                <span>Escolas:
+                    <label id="lbSchools"></label>
+                </span>
+                <hr />
+                <span>P. Policiais:
+                    <label id="lbCops"></label>
+                </span>
+                <hr />
+                <span>Criminalidade:
+                    <label id="lbCrimeIndex"></label>
+                </span>
+                <hr />
+                <button id="btnLimpar" class="btn btn-primary">Limpar</button>
+            </fieldset>
+        </div>
+        <div id="reponseErrorMessage">
+            <fieldset class="alert">
+                <legend>Ops...</legend>
+                <button type="button" id="btnAlertClose" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+                <strong>Esta morto Jim! </strong><br><label>Algo deu errado, tente novamente.</label>
+            </fieldset>
+        </div>
     </div>
-
+    <div id="mapDiv">
+    </div>
     <div data-dojo-type="dijit.Dialog" id="dialog1" title="Resultados"></div>
-
 </body>
 </html>
 

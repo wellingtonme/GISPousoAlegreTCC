@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "About";
+    ViewBag.Title = "Sobre";
 }
 
 <hgroup class="title">
@@ -7,28 +7,32 @@
     <h2>@ViewBag.Message</h2>
 </hgroup>
 
-<article>
+<article class="textsStyle">
     <p>
-        Use this area to provide additional information.
+        Trabalho de TCC desenvolvido com o objetivo de construir um SIG (sistena de informações geográficas)
+        capaz de armazenar localização de escolas, localização de postos policiais e indíces de criminalidade, este ultimo classificado 
+        em alto, médio, baixo e praticamente inofensivo. 
     </p>
 
     <p>
-        Use this area to provide additional information.
+        Este trabalho também veio para exemplificar os usos de algumas funçoes da API ArchGIS em JavaScript, o download deste projeto está
+        disponivel para download <a href="https://github.com/wellingtonme/GISPousoAlegreTCC" target="_blank">aqui</a>.
     </p>
-
     <p>
-        Use this area to provide additional information.
+        Acesse o menu GIS para vizualizar o projeto GIS funcionando. Todas as localidades e indices, exceto a população, foram simuladas pelo 
+        autor.
     </p>
 </article>
 
 <aside>
-    <h3>Aside Title</h3>
-    <p>
-        Use this area to provide additional information.
-    </p>
+    <h3>Links de Apoio</h3>
     <ul>
-        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-        <li>@Html.ActionLink("About", "About", "Home")</li>
-        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+        <li><a href="https://developers.arcgis.com/javascript/" target="_blank">API References</a></li>
+        <li><a href="http://www.postgis.net/docs/" target="_blank">PostGIS docs</a></li>
+        <li><a href="http://msdn.microsoft.com/pt-br/library/z1zx9t92.aspx" target="_blank">Introdução ao C# e .NET</a></li>
+        <li><a href="http://msdn.microsoft.com/en-us/library/618ayhy6.aspx" target="_blank">C# References</a></li>
+        <li><a href="http://www.asp.net/mvc/tutorials/mvc-4/getting-started-with-aspnet-mvc4/intro-to-aspnet-mvc-4" target="_blank">Introdução ao MVC 4 a ASP.NET</a></li>
+        <li><a href="http://forums.asp.net/1146.aspx/1?MVC" target="_blank">Fórum ASP.NET MVC</a>.</li>
+        <li><a href="http://go.microsoft.com/fwlink/?LinkId=245153" target="_blank">Manage NuGet</a></li>
     </ul>
 </aside>

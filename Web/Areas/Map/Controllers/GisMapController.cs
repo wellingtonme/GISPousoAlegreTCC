@@ -7,7 +7,8 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using ApplicationService.GisMapServices;
 using SharpArch.Domain;
-using Model.School;
+using Model.Points;
+using System.Collections;
 
 namespace Web.Areas.Map.Controllers
 {
@@ -31,6 +32,44 @@ namespace Web.Areas.Map.Controllers
             return View();
         }
 
+        public JsonResult GetGraphicsLayersSchools()
+        {
+            JsonResult result = new JsonResult();
+
+            try
+            {
+                var schoolService = SafeServiceLocator<ISchoolService>.GetService();
+                var graphicsPoints = schoolService.GetSchoolGraphycsLayersPoints();
+                result.Data = graphicsPoints;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return result;
+        }
+
+        public JsonResult GetGraphycsLayerCops()
+        {
+            JsonResult result = new JsonResult();
+
+            try
+            {
+                var copsService = SafeServiceLocator<ICopsService>.GetService();
+                var graphicsPoints = copsService.GetCopsGraphycsLayersPoints();
+                result.Data = graphicsPoints;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return result;
+        }
+
         public JsonResult GetSchoolInSelectedArea(string geometry)
         {
             JsonResult result = new JsonResult();
@@ -39,9 +78,9 @@ namespace Web.Areas.Map.Controllers
             {
                 //var js = new JavaScriptSerializer();
                 //var obj = js.Serialize(geometry);
-                string coordinates = GetCoordinates(geometry);
+                IList<string[]> coordinatesWebMercator = GetCoordinates(geometry);
 
-                IList<SchoolsInPolygonModel> schools = SafeServiceLocator<ISchoolService>.GetService().GetAllSchoolsInSelectedArea(coordinates);
+                IList<SchoolsInPolygonModel> schools = SafeServiceLocator<ISchoolService>.GetService().GetAllSchoolsInSelectedArea(coordinatesWebMercator);
             }
             catch (Exception ex)
             {
@@ -51,21 +90,23 @@ namespace Web.Areas.Map.Controllers
             return result;
         }
 
-        private string GetCoordinates(string coordinates)
+        private IList<string[]> GetCoordinates(string coordinates)
         {
-            string result = "";
+            //string result = "";
+            IList<string[]> result = null;
             try
             {
                 string[] splitCoords = coordinates.Split(',');
                 
                 for (int x = 0; x < splitCoords.Length; x = x+2)
                 {
-                    result = string.Concat(result,(string.Format("{0} {1}{2}", splitCoords[x], splitCoords[x + 1], ',')));
+                    result.Add(new string[]{splitCoords[x], splitCoords[x + 1]});
+                    //result = string.Concat(result,(string.Format("{0} {1}{2}", splitCoords[x], splitCoords[x + 1], ',')));
                 }
             }
             catch (Exception ex)
             {
-
+                result = null;
             }
 
             return result;

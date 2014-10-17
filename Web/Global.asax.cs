@@ -13,6 +13,7 @@ using Castle.Windsor;
 using Microsoft.Practices.ServiceLocation;
 using CommonServiceLocator.WindsorAdapter;
 using Web.Utils;
+using ApplicationService.AutoMapper;
 
 namespace Web
 {
@@ -39,6 +40,8 @@ namespace Web
             ControllerBuilder.Current.SetControllerFactory(new WindsorControllerFactory(container));
             container.RegisterControllers(typeof(HomeController).Assembly);
             ComponentRegistrar.AddComponentsTo(container);
+
+            AutoMapperConfig.RegisterMappers();
 
             ServiceLocator.SetLocatorProvider(() => new WindsorServiceLocator(container));
         }
