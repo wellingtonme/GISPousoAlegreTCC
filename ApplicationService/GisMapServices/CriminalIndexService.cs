@@ -67,5 +67,94 @@ namespace ApplicationService.GisMapServices
 
             return result;
         }
+
+        public CriminalIndexResultModel GetAllCriminalIndexInSelectedArea(string coordinates)
+        {
+            CriminalIndexResultModel result = null;
+            try
+            {
+                coordinates = CoordinatesParser.ParseCoordinatesToPolygon(coordinates);
+                coordinates = string.Format("POLYGON(({0}))", coordinates);
+                var dataBaseService = SafeServiceLocator<IDataBaseBasics>.GetService();
+                var sql = dataBaseService.GetSqlCommandByName("selectCriminalIndexInArea");
+
+                if (_conn == null) _conn = dataBaseService.GetConnection();
+                _conn.Open();
+
+                NpgsqlCommand command = new NpgsqlCommand(sql.SqlCommand, _conn);
+                command.Parameters.Add(new NpgsqlParameter("polygon", coordinates));
+
+                NpgsqlDataReader dr = command.ExecuteReader();
+
+                var criminals = DataBaseResultConversion.FormatResultList<CriminalIndexModel>(dr);
+
+                _conn.Close();
+
+                if (criminals == null) return null;
+                if (criminals.Count < 1) return null;
+
+                result = FormatToCriminalIndexResult(criminals);
+
+            }
+            catch (Exception ex)
+            {
+                if (_conn != null) _conn.Close();
+            }
+            return result;
+        }
+
+        private CriminalIndexResultModel FormatToCriminalIndexResult(IList<CriminalIndexModel> criminals)
+        {
+            CriminalIndexResultModel result = null;
+
+            try
+            {
+                if (criminals == null) return null;
+                if (criminals.Count < 1) return null;
+
+                int index = (int)Math.Round(criminals.Average(c => c.CriminalIndex));
+
+                result = new CriminalIndexResultModel();
+                foreach (var item in criminals)
+                {
+                    result.Districts.Add(item.District);
+                }
+
+                result.CriminalIndex = GetCriminalIndexName(index);
+
+            }
+            catch (Exception ex)
+            {
+                result = null;
+            }
+
+            return result;
+        }
+
+        private string GetCriminalIndexName(int criminalIndex)
+        {
+            string criminalName = "";
+
+            switch (criminalIndex)
+            {
+                case 1:
+                    criminalName = "Muito Baixo";
+                    break;
+                case 2:
+                    criminalName = "Baixo";
+                    break;
+                case 3:
+                    criminalName = "Media";
+                    break;
+                case 4:
+                    criminalName = "Alto";
+                    break;
+                case 5:
+                    criminalName = "Muito Alto";
+                    break;
+            }
+
+            return criminalName;
+        }
     }
 }

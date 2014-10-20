@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataBase\SqlsModel.cs" />
+    <Compile Include="GisMap\CriminalIndexResultModel.cs" />
     <Compile Include="GisMap\PointModel.cs" />
     <Compile Include="GisMap\PolygonModel.cs" />
     <Compile Include="Points\CopsInPolygonModel.cs" />

@@ -33,6 +33,9 @@
                     <img src="~/Images/cops_mark.png" alt="Cops Mark" />
                     <label>Postos Policiais.</label>
                 </div>
+                <a class="tooltip" href="#">Indices Criminalidade
+                    <span class="classic"></span>
+                </a>
             </fieldset>
         </div>
         @*<div id="coordinatesContent">
@@ -50,27 +53,29 @@
         <div id="resultContainer">
             <fieldset>
                 <legend>Resultados</legend>
-                <span>População:
+                <span><strong>População:</strong>
                     <label id="lbPopulationNumer"></label>
                 </span>
                 <hr />
-                <span>Escolas:
+                <span><strong>Escolas:</strong>
                     <label id="lbSchools"></label>
                 </span>
-                <div>
+                <div id="divSchoolsContent">
                     <ul id="schoolsContent" class="divListWithScroll listInBlock"></ul>
                 </div>
                 <hr />
-                <span>P. Policiais:
+                <span><strong>P. Policiais:</strong>
                     <label id="lbCops"></label>
                 </span>
-                <div>
+                <div id="divCopsContent">
                     <ul id="copsContent" class="divListWithScroll listInBlock"></ul>
                 </div>
                 <hr />
-                <span>Criminalidade:
+                <span><strong>Criminalidade:</strong>
                     <label id="lbCrimeIndex"></label>
                 </span>
+                <br />
+                <span><strong>Bairros Com Criminalidade Na Seleção: </strong> <label id="lbCrimeDistrict"></label></span>
                 <hr />
                 <button id="btnLimpar" class="btn btn-primary">Limpar</button>
             </fieldset>

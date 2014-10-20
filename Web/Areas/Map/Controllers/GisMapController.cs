@@ -10,6 +10,7 @@ using SharpArch.Domain;
 using Model.Points;
 using System.Collections;
 using Common.Conversion;
+using Model.GisMap;
 
 namespace Web.Areas.Map.Controllers
 {
@@ -102,13 +103,16 @@ namespace Web.Areas.Map.Controllers
                 var coords = CoordinatesParser.ParseCoordinatesToPolygon(geometry);
                 var schoolService = SafeServiceLocator<ISchoolService>.GetService();
                 var copsService = SafeServiceLocator<ICopsService>.GetService();
+                var criminalIndexService = SafeServiceLocator<ICriminalIndexService>.GetService();
                 IList<SchoolModel> schoolsInArea = schoolService.GetAllSchoolsInSelectedArea(geometry);
                 IList<CopsModel> copsInArea = copsService.GetAllCopsInSelectedArea(geometry);
+                CriminalIndexResultModel criminalIndex = criminalIndexService.GetAllCriminalIndexInSelectedArea(geometry);
                 result.Data = new
                 {
                     reqStatus = 200,
                     schools = schoolsInArea,
-                    cops = copsInArea
+                    cops = copsInArea,
+                    criminalIndex = criminalIndex
                 };
             }
             catch (Exception ex)

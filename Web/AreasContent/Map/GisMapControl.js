@@ -60,6 +60,7 @@
 
                 function initTools(evtObj) {
                     GisMapConfiguration.setEventListeners();
+                    GisMapConfiguration.hideDivs();
                     gp = new Geoprocessor("http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Population_World/GPServer/PopulationSummary");
                     gp.setOutputSpatialReference({ wkid: 102100 });
                     gp.on("execute-complete", computeValues);
@@ -222,6 +223,14 @@
         $("#copsContent").empty();
         $("#schoolsContent").empty();
         $("#lbCrimeIndex").empty();
+        $("#lbCrimeIndex").text("");
+        $("#lbCrimeDistrict").text("");
+        GisMapConfiguration.hideDivs();
+    },
+
+    hideDivs: function(){
+        $("#copsContent").hide();
+        $("#schoolsContent").hide();
     },
 
     displaySchoolsInSelectedArea: function(coords){
@@ -229,18 +238,30 @@
         if (objsToDisplay.reqStatus != 500) {
             if (objsToDisplay.schools.length > 0) {
                 $("#lbSchools").text("");
+                $("#schoolsContent").show();
                 GisMapConfiguration.mountList(objsToDisplay.schools, $("#schoolsContent"));
             } else {
                 $("#schoolsContent").empty();
+                $("#schoolsContent").hide();
                 $("#lbSchools").text("Nenhuma escola na área selecionada");
             }
 
             if (objsToDisplay.cops.length > 0) {
                 $("#lbCops").text("");
+                $("#copsContent").show();
                 GisMapConfiguration.mountList(objsToDisplay.cops, $("#copsContent"));
             } else {
                 $("#copsContent").empty();
+                $("#copsContent").hide();
                 $("#lbCops").text("Nenhum posto policial na área selecionada");
+            }
+
+            if (objsToDisplay.criminalIndex !== null) {
+                $("#lbCrimeIndex").text(objsToDisplay.criminalIndex.CriminalIndex);
+                $("#lbCrimeDistrict").text(objsToDisplay.criminalIndex.Districts);
+            } else {
+                $("#lbCrimeIndex").text("Praticamente Inofencivo");
+                $("#lbCrimeDistrict").text("");
             }
         }
     },

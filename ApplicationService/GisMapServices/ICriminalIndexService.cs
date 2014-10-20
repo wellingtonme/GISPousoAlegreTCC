@@ -12,5 +12,6 @@ namespace ApplicationService.GisMapServices
     {
         IList<CriminalIndexModel> GetAllCriminalIndex();
         IList<PolygonModel> GetCriminalIndexGraphics();
+        CriminalIndexResultModel GetAllCriminalIndexInSelectedArea(string coordinates);
     }
 }
