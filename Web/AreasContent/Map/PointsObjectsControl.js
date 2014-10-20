@@ -38,25 +38,44 @@
         return points;
     },
     
-    displayObjsInSelectedArea: function (coords) {
-        
-        var schoolsInArea = null;
+    getCriminalIndexPolygons: function(){
+        var criminals = null;
+        $.ajax({
+            url: "/Map/GisMap/GetGraphicsCriminalIndex",
+            async: false,
+            type: 'GET',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                if (result != null)
+                    criminals = result;
+            }
+        });
+
+        return criminals;
+    },
+
+    getObjsInSelectedArea: function (coords) {
+        var objsToDisplay = null;
         if (coords != null && coords != undefined) {
-            /*convert coords from wkid 102100 to wkid 4326*/
-            //coords = CoordinatesConfiguration.convertRings(coords, 5);
             var params = coords;
             $.ajax({
-                url: "/Map/GisMap/GetSchoolInSelectedArea?geometry="+params,
+                url: "/Map/GisMap/GetObjectsInSelectedArea?geometry=" + params,
                 async: false,
                 type: 'GET',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (result) {
                     if (result != null)
-                        points = result;
+                        objsToDisplay = result;
+                },
+                error: function (data) {
+                    objsToDisplay = {reqStatus: 500}
                 }
             });
         }
+
+        return objsToDisplay;
     }
 
 });

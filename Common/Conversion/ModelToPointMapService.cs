@@ -87,5 +87,156 @@ namespace Common.Conversion
 
             return result;
         }
+
+        public PolygonModel ModelToGraphicPolygon(CriminalIndexModel model)
+        {
+            PolygonModel polygon = null;
+
+            try
+            {
+                IList<string> coords = CoordinatesParser.GetPolygonCoordinates(model.AreaLocation);
+                polygon = new PolygonModel();
+                polygon.geometry = new GeometryPolygon()
+                {
+                    spatialReference = new SpatialReference()
+                    {
+                        wkid = Constants.SPATIAL_REFERENCES_OF_POINT
+                    }
+                };
+                IList<IList<IList<string>>> ringsOut = new List<IList<IList<string>>>();
+                IList<IList<string>> ringsIn = new List<IList<string>>();
+
+                for (int x = 0; x < coords.Count; x=x+2)
+                {
+                    IList<string> coord = new List<string>();
+                    coord.Add(coords[x]);
+                    coord.Add(coords[x + 1]);
+                    ringsIn.Add(coord);
+                }
+
+                ringsOut.Add(ringsIn);
+                polygon.geometry.rings = ringsOut;
+                polygon.symbol = new SymbolPolygon()
+                {
+                    color = GetColor(model.CriminalIndex),
+                    outline = new Outline()
+                    {
+                        color = GetColor(model.CriminalIndex),
+                        width = Constants.POLYGON_WIDTH,
+                        type = Constants.OUTLINE_TYPE,
+                        style = Constants.OUTLINE_STYLE
+                    },
+                    type = Constants.POLYGON_TYPE,
+                    style = Constants.POLYGON_STYLE
+                };
+
+                polygon.symbol.color[3] = Constants.COLOR_OUTLINE;
+                polygon.symbol.outline.color[3] = Constants.COLOR_LINE;
+
+                polygon.attributes = new AttributesPolygon()
+                {
+                    District = model.District,
+                    CriminalIndex = GetIndexName(model.CriminalIndex)
+                };
+
+                polygon.infoTemplate = new InfoTemplate()
+                {
+                    title = "Indice de Criminalidade",
+                    content = Constants.CRIMINAL_INDEX_CONTENT
+                };
+            }
+            catch (Exception ex)
+            {
+                polygon = null;
+            }
+
+            return polygon;
+        }
+
+        private string GetIndexName(int criminalIndex)
+        {
+            string result = "";
+
+            try
+            {
+                switch (criminalIndex)
+                {
+                    case 1:
+                        result = "Muito Baixo";
+                        break;
+                    case 2:
+                        result = "Baixo";
+                        break;
+                    case 3:
+                        result = "Médio";
+                        break;
+                    case 4:
+                        result = "Alto";
+                        break;
+                    case 5:
+                        result = "Muito Alto";
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                result = "";
+            }
+
+            return result;
+        }
+
+        private IList<int> GetColor(int indexCriminal)
+        {
+            IList<int> color = null;
+
+            try
+            {
+                switch (indexCriminal)
+                {
+                    case 1: 
+                        color = Constants.CRIMINAL_INDICE_VERY_LOW;
+                        break;
+                    case 2:
+                        color = Constants.CRIMINAL_INDICE_LOW;
+                        break;
+                    case 3:
+                        color = Constants.CRIMINAL_INDICE_MEDIUM;
+                        break;
+                    case 4:
+                        color = Constants.CRIMINAL_INDICE_HIGH;
+                        break;
+                    case 5:
+                        color = Constants.CRIMINAL_INDICE_VERY_HIGH;
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return color;
+        }
+
+        public IList<PolygonModel> ConvertListToGraphicsPolygon(IList<CriminalIndexModel> criminalIndex)
+        {
+            IList<PolygonModel> result = null;
+
+            try
+            {
+                result = new List<PolygonModel>();
+                foreach (var item in criminalIndex)
+                {
+                    result.Add(ModelToGraphicPolygon(item));
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return result;
+        }
     }
 }

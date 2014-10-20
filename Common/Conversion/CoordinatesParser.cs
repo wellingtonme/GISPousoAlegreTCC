@@ -8,6 +8,31 @@ namespace Common.Conversion
 {
     public static class CoordinatesParser
     {
+        public static IList<string> GetPolygonCoordinates(string coordinatesToParse)
+        {
+            IList<string> result = null;
+
+            try
+            {
+                result = new List<string>();
+                string[] split = coordinatesToParse.Split('(');
+                split[2] = split[2].Replace(")", "");
+                string[] coords = split[2].Split(',');
+                for (int x = 0; x < coords.Length; x++)
+                {
+                    string[] temp = coords[x].Split(' ');
+                    result.Add(temp[0]);
+                    result.Add(temp[1]);
+                }
+            }
+            catch (Exception ex)
+            {
+                result = null;
+            }
+
+            return result;
+        }
+
         public static IDictionary<string, string> GetPointCoordinates(string coordinatesToParse)
         {
             IDictionary<string, string> result = null;
@@ -67,9 +92,26 @@ namespace Common.Conversion
             return result;
         }
 
-        public static string TransformListInParameter(IList<double[]> list)
+        public static string ParseCoordinatesToPolygon(string coordinates)
         {
-            return "";
+            string result = "";
+
+            try
+            {
+                string[] splited = coordinates.Split(',');
+                for (int x = 0; x < splited.Length; x=x+2)
+                {
+                    var temp = string.Concat(splited[x] + " ", splited[x + 1]+",");
+                    if ((x + 2) == splited.Length) temp = temp.Replace(",", "");
+                    result = string.Concat(result, temp);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return result;
         }
     }
 }

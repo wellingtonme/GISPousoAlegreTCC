@@ -55,13 +55,15 @@ namespace ApplicationService.GisMapServices
             return result;
         }
 
-        public IList<SchoolsInPolygonModel> GetAllSchoolsInSelectedArea(IList<string[]> coordinates)
+        public IList<SchoolModel> GetAllSchoolsInSelectedArea(string coordinates)
         {
-            IList<SchoolsInPolygonModel> result = null;
+            IList<SchoolModel> result = null;
             try
             {
-                IList<double[]> geographics = CoordinatesParser.ConverListWebMercatorToGeographic(coordinates);
+                //IList<double[]> geographics = CoordinatesParser.ConverListWebMercatorToGeographic(coordinates);
 
+                coordinates = CoordinatesParser.ParseCoordinatesToPolygon(coordinates);
+                coordinates = string.Format("POLYGON(({0}))", coordinates);
                 var dataBaseService = SafeServiceLocator<IDataBaseBasics>.GetService();
                 var sql = dataBaseService.GetSqlCommandByName("selectSchoolInPolygon");
 
@@ -69,11 +71,13 @@ namespace ApplicationService.GisMapServices
                 _conn.Open();
 
                 NpgsqlCommand command = new NpgsqlCommand(sql.SqlCommand, _conn);
-                command.Parameters.Add(new NpgsqlParameter("coordinates", coordinates));
+                command.Parameters.Add(new NpgsqlParameter("polygon", coordinates));
 
                 NpgsqlDataReader dr = command.ExecuteReader();
 
-                result = DataBaseResultConversion.FormatResultList<SchoolsInPolygonModel>(dr);
+                result = DataBaseResultConversion.FormatResultList<SchoolModel>(dr);
+
+                _conn.Close();
             }
             catch (Exception ex)
             {

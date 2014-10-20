@@ -382,6 +382,10 @@
       <Project>{9bb14902-0d11-44ed-8db7-b0c232dd5db0}</Project>
       <Name>ApplicationService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{22d980e6-36b8-404f-a57b-705b4b390c15}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Data\Data.csproj">
       <Project>{b3cb0e38-8519-4e0a-ab44-0bde0acdca39}</Project>
       <Name>Data</Name>

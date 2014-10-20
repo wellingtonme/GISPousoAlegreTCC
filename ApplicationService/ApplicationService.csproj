@@ -41,7 +41,9 @@
   <ItemGroup>
     <Compile Include="AutoMapper\AutoMapperConfig.cs" />
     <Compile Include="GisMapServices\CopsService.cs" />
+    <Compile Include="GisMapServices\CriminalIndexService.cs" />
     <Compile Include="GisMapServices\ICopsService.cs" />
+    <Compile Include="GisMapServices\ICriminalIndexService.cs" />
     <Compile Include="GisMapServices\ISchoolService.cs" />
     <Compile Include="GisMapServices\SchoolService.cs" />
   </ItemGroup>

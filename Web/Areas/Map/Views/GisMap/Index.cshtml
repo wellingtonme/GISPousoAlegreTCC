@@ -35,16 +35,16 @@
                 </div>
             </fieldset>
         </div>
-        <div id="coordinatesContent">
+        @*<div id="coordinatesContent">
             <fieldset>
                 <legend>Coordenadas</legend>
                 <span id="coordinates">0, 0</span>
             </fieldset>
-        </div>
+        </div>*@
         <div>
             <fieldset>
                 <legend>Calculos</legend>
-                <button id="btnCalcData" class="btn btn-primary" onclick="app.toolbar.activate(esri.toolbars.Draw.FREEHAND_POLYGON);app.map.hideZoomSlider();">Calcular Dados</button>
+                <button id="btnCalcData" class="btn btn-primary" onclick="GisMapConfiguration.clearResponseMessage(); app.toolbar.activate(esri.toolbars.Draw.FREEHAND_POLYGON);app.map.hideZoomSlider();">Calcular Dados</button>
             </fieldset>
         </div>
         <div id="resultContainer">
@@ -57,10 +57,16 @@
                 <span>Escolas:
                     <label id="lbSchools"></label>
                 </span>
+                <div>
+                    <ul id="schoolsContent" class="divListWithScroll listInBlock"></ul>
+                </div>
                 <hr />
                 <span>P. Policiais:
                     <label id="lbCops"></label>
                 </span>
+                <div>
+                    <ul id="copsContent" class="divListWithScroll listInBlock"></ul>
+                </div>
                 <hr />
                 <span>Criminalidade:
                     <label id="lbCrimeIndex"></label>
@@ -69,15 +75,15 @@
                 <button id="btnLimpar" class="btn btn-primary">Limpar</button>
             </fieldset>
         </div>
-        <div id="reponseErrorMessage">
-            <fieldset class="alert">
-                <legend>Ops...</legend>
-                <button type="button" id="btnAlertClose" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
-                <strong>Esta morto Jim! </strong><br><label>Algo deu errado, tente novamente.</label>
-            </fieldset>
-        </div>
+
     </div>
     <div id="mapDiv">
+        <div id="reponseErrorMessage" class="alert">
+            <button type="button" id="btnAlertClose" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span></button>
+            <strong>Esta morto Jim! </strong>
+            <br>
+            <label id="lbErrorResponse">Algo deu errado, tente novamente.</label>
+        </div>
     </div>
     <div data-dojo-type="dijit.Dialog" id="dialog1" title="Resultados"></div>
 </body>

@@ -13,5 +13,9 @@ namespace Common.Conversion
         PointModel ModelToGraphicPoint(GenericPointModel point, string imageUrl, string templateTitle, string templateContent);
 
         IList<PointModel> ConvertListInGraplhicsPoints(IList<GenericPointModel> points, GraphycsLayerType graphicsType);
+
+        PolygonModel ModelToGraphicPolygon(CriminalIndexModel model);
+
+        IList<PolygonModel> ConvertListToGraphicsPolygon(IList<CriminalIndexModel> criminalIndex);
     }
 }

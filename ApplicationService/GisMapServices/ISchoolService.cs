@@ -12,7 +12,7 @@ namespace ApplicationService.GisMapServices
     {
         IList<SchoolModel> GetAllSchools();
 
-        IList<SchoolsInPolygonModel> GetAllSchoolsInSelectedArea(IList<string[]> coordinates);
+        IList<SchoolModel> GetAllSchoolsInSelectedArea(string coordinates);
 
         IList<PointModel> GetSchoolGraphycsLayersPoints();
     }

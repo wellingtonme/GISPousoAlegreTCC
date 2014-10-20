@@ -41,8 +41,10 @@
   <ItemGroup>
     <Compile Include="DataBase\SqlsModel.cs" />
     <Compile Include="GisMap\PointModel.cs" />
+    <Compile Include="GisMap\PolygonModel.cs" />
     <Compile Include="Points\CopsInPolygonModel.cs" />
     <Compile Include="Points\CopsModel.cs" />
+    <Compile Include="Points\CriminalIndexModel.cs" />
     <Compile Include="Points\GenericPointModel.cs" />
     <Compile Include="Points\SchoolModel.cs" />
     <Compile Include="Points\SchoolsInPolygonModel.cs" />

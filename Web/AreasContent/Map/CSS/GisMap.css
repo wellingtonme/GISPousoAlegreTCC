@@ -80,6 +80,31 @@ html, body{
 }
 
 /*Classies*/
+.divListWithScroll {
+    height:60px;
+    overflow: scroll;
+}
+
+.listInBlock li{
+    display: block;
+}
+
+.listInBlock li a{
+    text-decoration:none;
+    font-style:normal;
+}
+
+.listInBlock li a:hover{
+    text-decoration:underline;
+    font-style:normal;
+}
+
+.listInBlock li a:visited{
+    text-decoration:none;
+    font-style:normal;
+    color:#000;
+}
+
 .alert {
   color: #a94442;
   background-color: #f2dede;

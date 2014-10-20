@@ -9,6 +9,7 @@ using ApplicationService.GisMapServices;
 using SharpArch.Domain;
 using Model.Points;
 using System.Collections;
+using Common.Conversion;
 
 namespace Web.Areas.Map.Controllers
 {
@@ -70,17 +71,45 @@ namespace Web.Areas.Map.Controllers
             return result;
         }
 
-        public JsonResult GetSchoolInSelectedArea(string geometry)
+        public JsonResult GetGraphicsCriminalIndex()
+        {
+            JsonResult result = new JsonResult();
+
+            try
+            {
+                var criminalService = SafeServiceLocator<ICriminalIndexService>.GetService();
+                var criminals = criminalService.GetCriminalIndexGraphics();
+                if (criminalService != null)
+                {
+                    result.Data = criminals;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return result;
+        }
+
+        public JsonResult GetObjectsInSelectedArea(string geometry)
         {
             JsonResult result = new JsonResult();
             result.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
             try
             {
-                //var js = new JavaScriptSerializer();
-                //var obj = js.Serialize(geometry);
-                IList<string[]> coordinatesWebMercator = GetCoordinates(geometry);
-
-                IList<SchoolsInPolygonModel> schools = SafeServiceLocator<ISchoolService>.GetService().GetAllSchoolsInSelectedArea(coordinatesWebMercator);
+                var coords = CoordinatesParser.ParseCoordinatesToPolygon(geometry);
+                var schoolService = SafeServiceLocator<ISchoolService>.GetService();
+                var copsService = SafeServiceLocator<ICopsService>.GetService();
+                IList<SchoolModel> schoolsInArea = schoolService.GetAllSchoolsInSelectedArea(geometry);
+                IList<CopsModel> copsInArea = copsService.GetAllCopsInSelectedArea(geometry);
+                result.Data = new
+                {
+                    reqStatus = 200,
+                    schools = schoolsInArea,
+                    cops = copsInArea
+                };
             }
             catch (Exception ex)
             {

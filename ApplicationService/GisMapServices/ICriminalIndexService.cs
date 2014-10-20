@@ -8,12 +8,9 @@ using System.Threading.Tasks;
 
 namespace ApplicationService.GisMapServices
 {
-    public interface ICopsService
+    public interface ICriminalIndexService
     {
-        IList<CopsModel> GetAllCops();
-
-        IList<CopsModel> GetAllCopsInSelectedArea(string coordinates);
-
-        IList<PointModel> GetCopsGraphycsLayersPoints();
+        IList<CriminalIndexModel> GetAllCriminalIndex();
+        IList<PolygonModel> GetCriminalIndexGraphics();
     }
 }

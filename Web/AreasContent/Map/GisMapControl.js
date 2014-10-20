@@ -2,9 +2,9 @@
     initialize: function () {
 
         require(["esri/Color",
+              "esri/InfoTemplate",
               "dojo/string",
               "dijit/registry",
-
               "esri/config",
               "esri/layers/GraphicsLayer",
               "esri/graphic",
@@ -16,6 +16,7 @@
               "esri/tasks/FeatureSet",
               "esri/toolbars/draw",
               "esri/symbols/SimpleLineSymbol",
+              "esri/symbols/SimpleFillSymbol",
               "esri/dijit/PopupTemplate",
               "esri/geometry/Point",
               "dojo/on",
@@ -27,7 +28,7 @@
               "dojo/domReady!"
 
         ],
-            function (Color, string, registry, esriConfig, GraphicsLayer, Graphic, Map, ArcGISDynamicMapServiceLayer,
+            function (Color,InfoTemplate, string, registry, esriConfig, GraphicsLayer, Graphic, Map, ArcGISDynamicMapServiceLayer,
                 FeatureLayer, webMercatorUtils, Geoprocessor, FeatureSet, Draw, SimpleLineSymbol, SimpleFillSymbol,
                 PopupTemplate, Point, on, array, esriRequest, SimpleMarkerSymbol, SpatialReference, dom) {
 
@@ -71,13 +72,14 @@
 
                     addSchoolsPoints();
                     addCopsPoints();
+                    addCriminalPolygons();
                 }
 
                 function showCoordinates(evt) {
                     //the map is in web mercator but display coordinates in geographic (lat, long)
                     var mp = webMercatorUtils.webMercatorToGeographic(evt.mapPoint);
                     //display mouse coordinates
-                    document.getElementById("coordinates").innerHTML = mp.x.toFixed(5) + ", " + mp.y.toFixed(5);
+                    //document.getElementById("coordinates").innerHTML = mp.x.toFixed(5) + ", " + mp.y.toFixed(5);
                 }
 
 
@@ -86,11 +88,12 @@
                     var points = PointsObjectsConfiguration.getSchoolsPoints();
 
                     var graphicLayer = new GraphicsLayer();
-                    points.forEach(function (school) {
-                        var gra = new esri.Graphic(school);
-                        graphicLayer.add(gra);
-                    });
-                    
+                    if (points !== null && points !== undefined) {
+                        points.forEach(function (school) {
+                            var gra = new esri.Graphic(school);
+                            graphicLayer.add(gra);
+                        });
+                    }
                     map.addLayer(graphicLayer);
                     map.reorderLayer(graphicLayer, 1);
                 }
@@ -99,13 +102,58 @@
                     var points = PointsObjectsConfiguration.getCopsPoints();
 
                     var graphicLayer = new GraphicsLayer();
-                    points.forEach(function (cop) {
-                        var gra = new esri.Graphic(cop);
-                        graphicLayer.add(gra);
-                    });
-
+                    if (points !== null && points !== undefined) {
+                        points.forEach(function (cop) {
+                            var gra = new esri.Graphic(cop);
+                            graphicLayer.add(gra);
+                        });
+                    }
                     map.addLayer(graphicLayer);
                     map.reorderLayer(graphicLayer, 2);
+                }
+
+                function addCriminalPolygons() {
+                    var criminals = PointsObjectsConfiguration.getCriminalIndexPolygons();
+                    var graphicLayer = new GraphicsLayer();
+                    if (criminals !== null) {
+                        if (criminals.length > 0) {
+                            criminals.forEach(function (criminal) {
+                                var infoTemp = new InfoTemplate(criminal.infoTemplate.title, criminal.infoTemplate.content);
+                                criminal.infoTemplate = infoTemp;
+                                criminal.symbol.color[3] = 64;
+                                var gra = new esri.Graphic(criminal);
+                                graphicLayer.add(gra);
+                            });
+                        }
+                    }
+                    map.addLayer(graphicLayer);
+                    map.reorderLayer(graphicLayer, 3);
+                    //var t = "Bairro: ${District}<br/> Criminalidade: ${CriminalIndex}";
+                    //var info = new InfoTemplate("Criminalidade", t);
+                    //var myPolygon = {
+                    //    "geometry": {
+                    //        "rings": [[[-115.3125, 37.96875], [-111.4453125, 37.96875], [-99.84375, 36.2109375], [-99.84375, 23.90625], [-116.015625, 24.609375], [-115.3125, 37.96875]]],
+                    //        "spatialReference": { "wkid": 4326 }
+                    //    },
+                    //    "symbol": {
+                    //        "color": [0, 255, 0, 64],
+                    //        "outline": {
+                    //            "color": [0, 0, 0, 255],
+                    //            "width": 1,
+                    //            "type": "esriSLS",
+                    //            "style": "esriSLSSolid"
+                    //        },
+                    //        "type": "esriSFS",
+                    //        "style": "esriSFSSolid"
+                    //    },
+                    //    "attributes": {
+                    //        "District": "teste",
+                    //        "CriminalIndex": 1
+                    //    },
+                    //    "infoTemplate": info
+                    //};
+                    //var gra = new Graphic(myPolygon);
+                    //map.graphics.add(gra);
                 }
 
                 function computeZonalStats(evtObj) {
@@ -119,10 +167,9 @@
 
                     map.graphics.add(graphic);
                     toolbar.deactivate();
-
-                    /*Verify schools in the area*/
-                    PointsObjectsConfiguration.displayObjsInSelectedArea(geometry.rings[0]);
-
+                    
+                    /*Verify objs*/
+                    GisMapConfiguration.displaySchoolsInSelectedArea(geometry.rings[0]);
                     /*down here is the calc of population*/
                     var features = [];
                     features.push(graphic);
@@ -132,8 +179,6 @@
 
                     var params = { "inputPoly": featureSet };
 
-                    //teste
-                    var ptsConverted = CoordinatesConfiguration.convertToLonLag(geometry.rings[0][0]);
                     gp.execute(params);
                 }
 
@@ -146,9 +191,10 @@
                     //registry.byId("dialog1").setContent(content);
                     //registry.byId("dialog1").show();
                 }
-
+                
                 function processGpError(eventObj) {
                     console.log(eventObj.error);
+                    $("#lbErrorResponse").text("Problemas ao verificar população.");
                     $("#reponseErrorMessage").show();
                 }
 
@@ -159,12 +205,52 @@
         $("#btnAlertClose").on("click", function () {
             $("#reponseErrorMessage").hide();
         });
+
+        $("#btnLimpar").on("click", function () {
+            GisMapConfiguration.clearResultFields();
+        });
+    },
+
+    clearResponseMessage: function(){
+        $("#reponseErrorMessage").hide();
+    },
+
+    clearResultFields: function () {
+        $("#lbPopulationNumer").text("");
+        $("#lbSchools").text("");
+        $("#lbCops").text("");
+        $("#copsContent").empty();
+        $("#schoolsContent").empty();
+        $("#lbCrimeIndex").empty();
     },
 
     displaySchoolsInSelectedArea: function(coords){
-        var schoolsInArea;
+        var objsToDisplay = PointsObjectsConfiguration.getObjsInSelectedArea(coords);
+        if (objsToDisplay.reqStatus != 500) {
+            if (objsToDisplay.schools.length > 0) {
+                $("#lbSchools").text("");
+                GisMapConfiguration.mountList(objsToDisplay.schools, $("#schoolsContent"));
+            } else {
+                $("#schoolsContent").empty();
+                $("#lbSchools").text("Nenhuma escola na área selecionada");
+            }
 
-        schoolsInArea = PointsObjectsConfiguration.verifySchoolsInSelectedArea(coords);
+            if (objsToDisplay.cops.length > 0) {
+                $("#lbCops").text("");
+                GisMapConfiguration.mountList(objsToDisplay.cops, $("#copsContent"));
+            } else {
+                $("#copsContent").empty();
+                $("#lbCops").text("Nenhum posto policial na área selecionada");
+            }
+        }
+    },
+
+    mountList: function (list, component) {
+        component.empty();
+        list.forEach(function (item) {
+            var li = '<li><a href="#">' + item.Name + '</a></li><hr />';
+            component.append(li);
+        });
     }
 
 });

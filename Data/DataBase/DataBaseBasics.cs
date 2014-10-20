@@ -59,15 +59,20 @@ namespace Data.DataBase
 
                 conn.Close();
             }
+            catch (NpgsqlException ex)
+            {
+                if (conn != null) conn.Close();
+                throw ex;
+            }
             catch (ArgumentException ex)
             {
                 //TODO log
-                if(conn != null) conn.Close();
+                if (conn != null) conn.Close();
             }
             catch (Exception ex)
             {
                 ///TODO log
-                if(conn != null) conn.Close();
+                if (conn != null) conn.Close();
             }
 
             return sql;

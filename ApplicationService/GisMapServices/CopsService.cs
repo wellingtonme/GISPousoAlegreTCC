@@ -55,9 +55,35 @@ namespace ApplicationService.GisMapServices
             return result;
         }
 
-        public IList<CopsInPolygonModel> GetAllCopsInSelectedArea(string coordinates)
+        public IList<CopsModel> GetAllCopsInSelectedArea(string coordinates)
         {
-            throw new NotImplementedException();
+            IList<CopsModel> result = null;
+            try
+            {
+                //IList<double[]> geographics = CoordinatesParser.ConverListWebMercatorToGeographic(coordinates);
+
+                coordinates = CoordinatesParser.ParseCoordinatesToPolygon(coordinates);
+                coordinates = string.Format("POLYGON(({0}))", coordinates);
+                var dataBaseService = SafeServiceLocator<IDataBaseBasics>.GetService();
+                var sql = dataBaseService.GetSqlCommandByName("selectAllCopsInSelectedArea");
+
+                if (_conn == null) _conn = dataBaseService.GetConnection();
+                _conn.Open();
+
+                NpgsqlCommand command = new NpgsqlCommand(sql.SqlCommand, _conn);
+                command.Parameters.Add(new NpgsqlParameter("polygon", coordinates));
+
+                NpgsqlDataReader dr = command.ExecuteReader();
+
+                result = DataBaseResultConversion.FormatResultList<CopsModel>(dr);
+
+                _conn.Close();
+            }
+            catch (Exception ex)
+            {
+                if (_conn != null) _conn.Close();
+            }
+            return result;
         }
 
         public IList<PointModel> GetCopsGraphycsLayersPoints()
